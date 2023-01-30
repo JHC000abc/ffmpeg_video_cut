@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>732</width>
+    <height>607</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit_in">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>190</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_in">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>180</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>输入路径</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_out">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>240</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>输出路径</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_out">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>250</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_out_name">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>310</y>
+     <width>551</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>570</y>
+     <width>651</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>24</number>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_start_cut">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>480</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>开始裁切</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_second">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>358</y>
+     <width>115</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>指定帧截取</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_round">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>358</y>
+     <width>115</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>范围截取</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_all">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>358</y>
+     <width>115</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>全部截取</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_start">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>410</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_end">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>410</y>
+     <width>171</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_num">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>410</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_fork">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>10</y>
+     <width>31</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/img/close_fill.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../res/source.qrc"/>
+ </resources>
+ <connections/>
+</ui>
