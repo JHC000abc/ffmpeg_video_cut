@@ -9,13 +9,15 @@
 """
 import os
 from threading import Thread
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRegExp
+from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from util import util_ffmpeg
 from gui.ui import process
 from PyQt5 import QtWidgets, QtCore
 from setting import setting
 import time
+
 
 
 class Process(QtWidgets.QWidget):
@@ -27,10 +29,10 @@ class Process(QtWidgets.QWidget):
         # 隐藏标题栏
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setFixedSize(self.width(),self.height())
-
         self.slot()
         self.view()
         self._thread()
+        self.top_status = False
 
     def _thread(self):
         """
@@ -53,6 +55,15 @@ class Process(QtWidgets.QWidget):
         self.ui.lineEdit_end.hide()
         self.ui.lineEdit_num.hide()
 
+        myValidator = QRegExpValidator(QRegExp("^[0-9]+$"))
+        self.ui.lineEdit_start.setValidator(myValidator)
+        self.ui.lineEdit_end.setValidator(myValidator)
+        self.ui.lineEdit_num.setValidator(myValidator)
+
+        self.ui.lineEdit_in.setReadOnly(True)
+        self.ui.lineEdit_out.setReadOnly(True)
+
+
     def slot(self):
         """
 
@@ -66,21 +77,25 @@ class Process(QtWidgets.QWidget):
         self.ui.radioButton_all.clicked.connect(self.slot_rdbtn_all)
         self.ui.pushButton_start_cut.clicked.connect(self.slot_start)
         self.ui.pushButton_fork.clicked.connect(self.slot_btn_fork)
+        self.ui.pushButton_top.clicked.connect(self.slot_btn_top)
         self.single.connect(self.add_bar)
+
+    def slot_btn_top(self):
+        if self.top_status == False:
+            self.setWindowFlags(Qt.WindowStaysOnTopHint | self.windowFlags())
+            self.top_status = True
+        else:
+            self.setWindowFlags(Qt.FramelessWindowHint)
+            self.top_status = False
+        self.show()
+
 
     def slot_btn_fork(self):
         """
 
         :return:
         """
-        if self.t1:
-            self.t1.join()
-        if self.t2:
-            self.t2.join()
-        if self.t3:
-            self.t3.join()
-        else:
-            pass
+        self.window().hide()
         self.closeEvent()
 
 
@@ -90,13 +105,20 @@ class Process(QtWidgets.QWidget):
         :return:
         """
         msg = QMessageBox()
-        a = msg.warning(self, "警告", '你确定要退出吗?', QMessageBox.Yes | QMessageBox.No,
+        a = msg.warning(self, None, '你确定要退出吗?', QMessageBox.Yes | QMessageBox.No,
                                  QMessageBox.No)  # "退出"代表的是弹出框的标题,"你确认退出.."表示弹出框的内容
-
         if a == QMessageBox.Yes:
+            if self.t1:
+                self.t1.join()
+            if self.t2:
+                self.t2.join()
+            if self.t3:
+                self.t3.join()
+            else:
+                pass
             os._exit(0)
         else:
-            pass
+            self.window().show()
 
 
     def slot_start(self):
@@ -104,54 +126,74 @@ class Process(QtWidgets.QWidget):
 
         :return:
         """
-        self.ui.pushButton_start_cut.setDisabled(True)
         self.check_input()
-        setting.LOAD_STATUS = 0
-        if self.ui.radioButton_second.isChecked():
-            file, second, out_file = self.ui.lineEdit_in.text(), self.ui.lineEdit_start.text(
-            ), self.ui.lineEdit_out.text().replace(":/", "://") + self.ui.lineEdit_out_name.text()
-            self.t1 = Thread(target=util_ffmpeg.split_specify_time,
-                   args=(file, second, out_file))
-            self.t1.start()
-        elif self.ui.radioButton_round.isChecked():
-            file, num, start, end, out_name = self.ui.lineEdit_in.text(), self.ui.lineEdit_num.text(), self.ui.lineEdit_start.text(
-            ), self.ui.lineEdit_end.text(), self.ui.lineEdit_out.text().replace(":/", "://") + self.ui.lineEdit_out_name.text()
-            self.t2 = Thread(target=util_ffmpeg.split_video_between_start_and_end,
-                   args=(file, num, start, end, out_name))
-            self.t2.start()
-        elif self.ui.radioButton_all.isChecked():
-            file, num, out_name = self.ui.lineEdit_in.text(), self.ui.lineEdit_num.text(
-            ), self.ui.lineEdit_out.text().replace(":/", "://") + self.ui.lineEdit_out_name.text()
-            self.t3 = Thread(
-                target=util_ffmpeg.split_video, args=(
-                    file, num, out_name))
-            self.t3.start()
-        else:
-            print("异常")
 
-        Thread(target=self.show_bar).start()
+
 
     def check_input(self):
         """
 
         :return:
         """
-        while True:
-            if self.ui.lineEdit_in.text() == "":
-                self.show_warning("请选择视频文件")
-                self.get_file()
-                break
-            elif self.ui.lineEdit_out.text() == "":
-                self.show_warning("请选择输出路径")
-                self.get_path()
-                break
-            elif self.ui.lineEdit_out_name.text() == "":
-                self.show_warning("请输入保存名")
-                break
-            elif not self.ui.radioButton_second.isChecked() and not self.ui.radioButton_round.isChecked() and not self.ui.radioButton_all.isChecked():
+        if self.ui.lineEdit_in.text() == "":
+            self.show_warning("请选择视频文件")
+            self.get_file()
+
+        elif self.ui.lineEdit_out.text() == "":
+            self.show_warning("请选择输出路径")
+            self.get_path()
+        elif self.ui.lineEdit_out_name.text() == "":
+            self.show_warning("请输入保存名")
+        elif not self.ui.lineEdit_out_name.text().startswith("/"):
+            self.ui.lineEdit_out_name.clear()
+            self.show_warning("保存名[必须以 / 开头]")
+        else:
+            if self.ui.radioButton_second.isChecked() == False and self.ui.radioButton_round.isChecked() == False and self.ui.radioButton_all.isChecked() == False:
                 self.show_warning("请选择处理条件")
-                break
-            break
+            else:
+                if self.ui.radioButton_second.isChecked():
+                    if self.ui.lineEdit_start.text() == "":
+                        self.show_warning("请输入要截取的时间点")
+                    else:
+                        file, second, out_file = self.ui.lineEdit_in.text(), self.ui.lineEdit_start.text(
+                        ), self.ui.lineEdit_out.text().replace(":/", "://") + self.ui.lineEdit_out_name.text()
+                        self.t1 = Thread(target=util_ffmpeg.split_specify_time,
+                                         args=(file, second, out_file))
+                        self.t1.start()
+                        self.change_start_status_run_bar()
+                elif self.ui.radioButton_round.isChecked():
+                    if self.ui.lineEdit_start.text() == "":
+                        self.show_warning("请输入开始截取时间")
+                    elif self.ui.lineEdit_end.text() == "":
+                        self.show_warning("请输入结束截取时间")
+                    elif self.ui.lineEdit_num.text() == "":
+                        self.show_warning("请输入每秒截取数")
+                    else:
+                        file, num, start, end, out_name = self.ui.lineEdit_in.text(), self.ui.lineEdit_num.text(), self.ui.lineEdit_start.text(
+                        ), self.ui.lineEdit_end.text(), self.ui.lineEdit_out.text().replace(":/",
+                                                                                            "://") + self.ui.lineEdit_out_name.text()
+                        self.t2 = Thread(target=util_ffmpeg.split_video_between_start_and_end,
+                                         args=(file, num, start, end, out_name))
+                        self.t2.start()
+                        self.change_start_status_run_bar()
+                elif self.ui.radioButton_all.isChecked():
+                    if self.ui.lineEdit_num.text() == "":
+                        self.show_warning("请输入每秒截取数")
+                    else:
+                        file, num, out_name = self.ui.lineEdit_in.text(), self.ui.lineEdit_num.text(
+                        ), self.ui.lineEdit_out.text().replace(":/", "://") + self.ui.lineEdit_out_name.text()
+                        self.t3 = Thread(
+                            target=util_ffmpeg.split_video, args=(
+                                file, num, out_name))
+                        self.t3.start()
+                        self.change_start_status_run_bar()
+                else:
+                    print("异常")
+
+    def change_start_status_run_bar(self):
+        self.ui.pushButton_start_cut.setDisabled(True)
+        setting.LOAD_STATUS = 0
+        Thread(target=self.show_bar).start()
 
     def hide_fotter(self):
         """
@@ -266,7 +308,19 @@ class Process(QtWidgets.QWidget):
         :return:
         """
         msg_box = QMessageBox(QMessageBox.Warning, 'Warning', text)
-        msg_box.exec_()
+        if self.top_status == True:
+            self.top_status = True
+            self.slot_btn_top()
+            msg_box.setWindowFlags(Qt.FramelessWindowHint)
+            msg_box.show()
+            msg_box.exec_()
+            self.top_status = False
+            self.slot_btn_top()
+
+        else:
+            msg_box.setWindowFlags(Qt.FramelessWindowHint)
+            msg_box.show()
+            msg_box.exec_()
 
     def add_bar(self,num):
         """

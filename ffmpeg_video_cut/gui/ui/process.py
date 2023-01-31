@@ -19,10 +19,16 @@ class Ui_Form(object):
         self.lineEdit_in.setGeometry(QtCore.QRect(90, 190, 401, 21))
         self.lineEdit_in.setObjectName("lineEdit_in")
         self.pushButton_in = QtWidgets.QPushButton(Form)
-        self.pushButton_in.setGeometry(QtCore.QRect(540, 180, 93, 28))
+        self.pushButton_in.setGeometry(QtCore.QRect(520, 180, 31, 28))
+        self.pushButton_in.setStyleSheet("border-image: url(:/img/folder_open_fill.png);\n"
+"border:None;")
+        self.pushButton_in.setText("")
         self.pushButton_in.setObjectName("pushButton_in")
         self.pushButton_out = QtWidgets.QPushButton(Form)
-        self.pushButton_out.setGeometry(QtCore.QRect(540, 240, 93, 28))
+        self.pushButton_out.setGeometry(QtCore.QRect(520, 240, 31, 31))
+        self.pushButton_out.setStyleSheet("border-image: url(:/img/folder_open_fill.png);\n"
+"border:None;")
+        self.pushButton_out.setText("")
         self.pushButton_out.setObjectName("pushButton_out")
         self.lineEdit_out = QtWidgets.QLineEdit(Form)
         self.lineEdit_out.setGeometry(QtCore.QRect(90, 250, 401, 21))
@@ -39,6 +45,7 @@ class Ui_Form(object):
         self.pushButton_start_cut.setObjectName("pushButton_start_cut")
         self.radioButton_second = QtWidgets.QRadioButton(Form)
         self.radioButton_second.setGeometry(QtCore.QRect(90, 358, 115, 31))
+        self.radioButton_second.setStyleSheet("")
         self.radioButton_second.setObjectName("radioButton_second")
         self.radioButton_round = QtWidgets.QRadioButton(Form)
         self.radioButton_round.setGeometry(QtCore.QRect(280, 358, 115, 31))
@@ -57,9 +64,16 @@ class Ui_Form(object):
         self.lineEdit_num.setObjectName("lineEdit_num")
         self.pushButton_fork = QtWidgets.QPushButton(Form)
         self.pushButton_fork.setGeometry(QtCore.QRect(690, 10, 31, 28))
-        self.pushButton_fork.setStyleSheet("border-image: url(:/img/close_fill.png);")
+        self.pushButton_fork.setStyleSheet("border-image: url(:/img/close_fill.png);\n"
+"border:None;")
         self.pushButton_fork.setText("")
         self.pushButton_fork.setObjectName("pushButton_fork")
+        self.pushButton_top = QtWidgets.QPushButton(Form)
+        self.pushButton_top.setGeometry(QtCore.QRect(10, 10, 31, 28))
+        self.pushButton_top.setStyleSheet("border-image: url(:/img/pin_fill.png);\n"
+"border:None;")
+        self.pushButton_top.setText("")
+        self.pushButton_top.setObjectName("pushButton_top")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -67,8 +81,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.pushButton_in.setText(_translate("Form", "输入路径"))
-        self.pushButton_out.setText(_translate("Form", "输出路径"))
         self.pushButton_start_cut.setText(_translate("Form", "开始裁切"))
         self.radioButton_second.setText(_translate("Form", "指定帧截取"))
         self.radioButton_round.setText(_translate("Form", "范围截取"))

@@ -26,27 +26,35 @@
   <widget class="QPushButton" name="pushButton_in">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>520</x>
      <y>180</y>
-     <width>93</width>
+     <width>31</width>
      <height>28</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/img/folder_open_fill.png);
+border:None;</string>
+   </property>
    <property name="text">
-    <string>输入路径</string>
+    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_out">
    <property name="geometry">
     <rect>
-     <x>540</x>
+     <x>520</x>
      <y>240</y>
-     <width>93</width>
-     <height>28</height>
+     <width>31</width>
+     <height>31</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/img/folder_open_fill.png);
+border:None;</string>
+   </property>
    <property name="text">
-    <string>输出路径</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit_out">
@@ -103,6 +111,9 @@
      <width>115</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>指定帧截取</string>
@@ -174,7 +185,25 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/img/close_fill.png);</string>
+    <string notr="true">border-image: url(:/img/close_fill.png);
+border:None;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_top">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>31</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/img/pin_fill.png);
+border:None;</string>
    </property>
    <property name="text">
     <string/>

@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="img">
     <file>./close_fill.png</file>
+    <file>check_fill.png</file>
+    <file>folder_open_fill.png</file>
+    <file>pin_fill.png</file>
   </qresource>
 </RCC>
